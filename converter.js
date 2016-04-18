@@ -1,28 +1,36 @@
 
-// <!-- Write a program that will convert a temperature from fahrenheit to celsius,
-// or from celsius to fahrenheit.
 
-// Create a button that, when clicked, displays the converted temperature.
+// Get a reference to the button element in the DOM
+var button = document.getElementById("converter");
+var fahren = document.getElementById("fahren");
+var celc = document.getElementById("celc");
+var finalTempDiv = document.getElementById("convTemp");
+var finalTempDivIn =finalTempDiv.innerHTML;
+var sumF= "";
+var sumC= "";
+var inputField = document.getElementById("tempInput");
+
 // Create another button that, when clicked, clears any text in the input field.
-// Add an event handler to the input field that checks if the user pressed the enter key,
-// and if that happens, perform the conversion.
 
-
-
-
-
-function getInput(){
-  var inputTemp = document.getElementById("tempInput").innerHTML;
-  return inputTemp;
+function eraseText() {
+  document.getElementById("tempInput").value= "";
 }
 
+function getInput(){
+  var inputTemp = document.getElementById("tempInput").value;
+  return inputTemp;
+  console.log("temp", inputTemp);
+}
+
+console.log("Input", getInput);
+
 function toCelsius () {
-  var celsius = (getInput() -  32) * 5 / 9;
+  var celsius = (getInput() -  32) / 1.8;
   return celsius;
 }
 
 function toFahrenheit () {
-  var fahrenheit = (getInput() *  9/5) + 32;
+  var fahrenheit = (getInput() * 1.8) + 32;
   return fahrenheit;
 }
 
@@ -30,12 +38,25 @@ function toFahrenheit () {
 // If the temperature is less than 32F/0C the color of the converted temperature should be blue.
 // For any other temperature, the color should be green. -->
 
+function colorF() {
+if (sumF > 90) {
+  finalTempDiv.style.color = 'red';
+} else if (sumF < 32) {
+  finalTempDiv.style.color = 'blue';
+} else {
+  finalTempDiv.style.color = 'green';
+}
+}
 
-// Get a reference to the button element in the DOM
-var button = document.getElementById("converter");
-var fahren = document.getElementById("fahren");
-var celc = document.getElementById("celc");
-var finalTempDiv = document.getElementById("convTemp");
+function colorC() {
+if (sumC > 32) {
+  finalTempDiv.style.color = 'red';
+} else if (sumC < 0) {
+  finalTempDiv.style.color = 'blue';
+} else {
+  finalTempDiv.style.color = 'green';
+}
+}
 
 
 
@@ -43,20 +64,32 @@ var finalTempDiv = document.getElementById("convTemp");
 // happen based on which radio button is selected.
 function determineConverter () {
   if (fahren.checked === true) {
-    var sumF = toFahrenheit();
+    sumF = toFahrenheit();
+    var color = colorF();
     finalTempDiv.innerHTML = "<p>" + sumF + "</p>";
   } else if (celc.checked === true) {
-     var sumC = toCelsius();
+     sumC = toCelsius();
+     var color = colorC();
     finalTempDiv.innerHTML = "<p>" + sumC + "</p>";
   } else {
     console.log("Please select a temperature to convert");
   }
-  console.log(determineConverter);
 }
 
 // Assign a function to be executed when the button is clicked
 button.addEventListener("click", determineConverter);
+inputField.addEventListener("keypress", pressEnter);
+
+function pressEnter(e){
+  var code = (e.keyCode ? e.keyCode : e.which);
+    if(code === 13) { //Enter keycode
+      determineConverter();
+    }
+  }
 
 
 
+
+// Add an event handler to the input field that checks if the user pressed the enter key,
+// and if that happens, perform the conversion.
 
